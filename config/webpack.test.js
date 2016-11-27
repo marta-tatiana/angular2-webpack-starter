@@ -67,22 +67,6 @@ module.exports = function (options) {
 
       rules: [
 
-        /**
-         * Source map loader support for *.js files
-         * Extracts SourceMaps for source files that as added as sourceMappingURL comment.
-         *
-         * See: https://github.com/webpack/source-map-loader
-         */
-        {
-          enforce: 'pre',
-          test: /\.js$/,
-          loader: 'source-map-loader',
-          exclude: [
-            // these packages have problems with their sourcemaps
-            helpers.root('node_modules/rxjs'),
-            helpers.root('node_modules/@angular')
-          ]
-        },
 
         /**
          * Typescript loader support for .ts and Angular 2 async routes via .async.ts
@@ -91,22 +75,12 @@ module.exports = function (options) {
          */
         {
           test: /\.ts$/,
-          loader: 'awesome-typescript-loader',
-          query: {
-            // use inline sourcemaps for "karma-remap-coverage" reporter
-            sourceMap: false,
-            inlineSourceMap: true,
-            compilerOptions: {
-
-              // Remove TypeScript helpers to be injected
-              // below by DefinePlugin
-              removeComments: true
-
-            }
-          },
+          // see https://github.com/AngularClass/angular2-webpack-starter/issues/796
+          loaders: [
+            'awesome-typescript-loader?removeComments=true',
+            'angular2-template-loader'],
           exclude: [/\.e2e\.ts$/]
         },
-
         /**
          * Json loader support for *.json files.
          *
@@ -205,7 +179,7 @@ module.exports = function (options) {
         }
       ),
 
-       /**
+      /**
        * Plugin LoaderOptionsPlugin (experimental)
        *
        * See: https://gist.github.com/sokra/27b24881210b56bbaff7

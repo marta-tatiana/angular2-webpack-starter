@@ -31,20 +31,10 @@ module.exports = function(config) {
      * preprocess matching files before serving them to the browser
      * available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
      */
-    preprocessors: { './config/spec-bundle.js': ['coverage', 'webpack', 'sourcemap'] },
+    preprocessors: { './config/spec-bundle.js': ['webpack'] },
 
     // Webpack Config at ./webpack.test.js
     webpack: testWebpackConfig,
-
-    coverageReporter: {
-      type: 'in-memory'
-    },
-
-    remapCoverageReporter: {
-      'text-summary': null,
-      json: './coverage/coverage.json',
-      html: './coverage/html'
-    },
 
     // Webpack please don't spam the console when running in karma!
     webpackMiddleware: { stats: 'errors-only'},
@@ -55,7 +45,9 @@ module.exports = function(config) {
      * possible values: 'dots', 'progress'
      * available reporters: https://npmjs.org/browse/keyword/karma-reporter
      */
-    reporters: [ 'mocha', 'coverage', 'remap-coverage' ],
+    reporters: [ 'mocha' ],
+
+    browserNoActivityTimeout: 30000,
 
     // web server port
     port: 9876,
@@ -78,6 +70,7 @@ module.exports = function(config) {
      */
     browsers: [
       'Chrome'
+      //'PhantomJS'
     ],
 
     customLaunchers: {
